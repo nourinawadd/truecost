@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TrueCost · Result</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#ECEBE6}
+a{color:#151515}a:hover{color:#C2181F}
+input::placeholder{color:#6B6964}
+input:focus,a:focus-visible,button:focus-visible{outline:2px solid #C2181F;outline-offset:2px}
+</style>
+</helmet>
+<div style="container-type: inline-size; min-height: 1320px; box-sizing: border-box; background: #ECEBE6; color: #151515; font-family: 'DM Mono', ui-monospace, monospace; padding: 0 5%; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: baseline; padding: 24px 0 16px; border-bottom: 1px solid #151515">
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: baseline">
+<a href="Main.dc.html" style="font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: 0.04em; text-decoration: none">TRUECOST</a>
+<span style="font-size: 12px; letter-spacing: 0.08em; color: #55534E">[EG] IMPORT COST CHECK</span>
+</div>
+<a href="Main.dc.html" style="font-size: 12px; letter-spacing: 0.08em; text-decoration: none">[+] CHECK ANOTHER</a>
+</header>
+
+<section style="display: flex; flex-wrap: wrap; gap: 32px; padding: 40px 0; border-bottom: 1px solid #151515">
+<div style="flex: 999 1 480px; min-width: 0; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<div style="flex: 0 0 132px; width: 132px; height: 132px; box-sizing: border-box; border: 1px solid #151515; background: #F5F4F0; position: relative">
+<svg width="130" height="130" viewBox="0 0 130 130" aria-hidden="true" style="display: block"><line x1="0" y1="0" x2="130" y2="130" stroke="#151515" stroke-width="1"></line><line x1="130" y1="0" x2="0" y2="130" stroke="#151515" stroke-width="1"></line></svg>
+<span style="position: absolute; left: 0; bottom: -22px; font-size: 11px; letter-spacing: 0.08em; color: #55534E">PRODUCT IMAGE</span>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<span style="font-size: 12px; letter-spacing: 0.08em; color: #55534E">SHOP.EXAMPLE.COM</span>
+<h1 style="margin: 0; font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(26px, 3.4cqw, 40px); line-height: 1.05; letter-spacing: -0.02em">[product title]</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px">
+<span style="border: 1px solid #151515; padding: 6px 10px">[✓] price · product data</span>
+<span style="border: 1px solid #151515; padding: 6px 10px">[?] category · guessed, check it</span>
+</div>
+</div>
+</div>
+
+<div style="flex: 1 1 340px; min-width: 0; box-sizing: border-box; background: #151515; color: #ECEBE6; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="font-size: 12px; letter-spacing: 0.08em; color: #B9B7B0">LANDED COST, ESTIMATED</span>
+<div style="font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(34px, 4.6cqw, 56px); line-height: 1; letter-spacing: -0.03em; display: flex; flex-wrap: wrap; gap: 0 14px">
+<span>EGP {{totalLow}}</span>
+<sc-if value="{{isRange}}" hint-placeholder-val="{{ true }}"><span>– {{totalHigh}}</span></sc-if>
+</div>
+<span style="font-size: 12px; line-height: 1.6; color: #B9B7B0">shelf price USD {{priceShown}} · that is {{markup}} more once it lands</span>
+</div>
+</section>
+
+<section style="display: flex; flex-wrap: wrap; gap: 48px; padding: 40px 0 56px">
+
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid #151515; font-size: 12px; letter-spacing: 0.08em">
+<span>BREAKDOWN</span>
+<span style="color: #55534E">EDIT ANY VALUE</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #C9C7C0">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center">
+<span style="font-size: 12px; color: #55534E; width: 36px">[01]</span>
+<label for="price" style="font-size: 14px; width: 140px">item price</label>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #55534E">USD <input id="price" type="number" inputmode="decimal" value="{{price}}" onChange="{{onPrice}}" style="width: 96px; height: 40px; box-sizing: border-box; padding: 0 10px; border: 1px solid #151515; border-radius: 0; background: #F5F4F0; font-family: inherit; font-size: 14px; color: #151515"></span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{itemEgp}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #C9C7C0">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center">
+<span style="font-size: 12px; color: #55534E; width: 36px">[02]</span>
+<label for="ship" style="font-size: 14px; width: 140px">shipping</label>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #55534E">USD <input id="ship" type="number" inputmode="decimal" value="{{ship}}" onChange="{{onShip}}" style="width: 96px; height: 40px; box-sizing: border-box; padding: 0 10px; border: 1px solid #151515; border-radius: 0; background: #F5F4F0; font-family: inherit; font-size: 14px; color: #151515"> forwarder estimate</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{shipEgp}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #151515">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center">
+<span style="font-size: 12px; color: #55534E; width: 36px">[03]</span>
+<label for="fx" style="font-size: 14px; width: 140px">exchange rate</label>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #55534E">1 USD = <input id="fx" type="number" inputmode="decimal" value="{{fx}}" onChange="{{onFx}}" style="width: 96px; height: 40px; box-sizing: border-box; padding: 0 10px; border: 1px solid #151515; border-radius: 0; background: #F5F4F0; font-family: inherit; font-size: 14px; color: #151515"> EGP · example, update</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right; color: #55534E">×</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #C9C7C0">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline">
+<span style="font-size: 12px; color: #55534E; width: 36px">[04]</span>
+<span style="font-size: 14px; width: 140px">cif value</span>
+<span style="font-size: 13px; color: #55534E">item + shipping, in egp</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{cifEgp}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #C9C7C0">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline">
+<span style="font-size: 12px; color: #55534E; width: 36px">[05]</span>
+<span style="font-size: 14px; width: 140px">{{dutyName}}</span>
+<span style="font-size: 13px; color: #55534E">{{dutyDetail}}</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{dutyStr}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 1px solid #C9C7C0">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline">
+<span style="font-size: 12px; color: #55534E; width: 36px">[06]</span>
+<span style="font-size: 14px; width: 140px">vat</span>
+<span style="font-size: 13px; color: #55534E">{{vatDetail}}</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{vatStr}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; padding: 16px 0; border-bottom: 2px solid #151515">
+<div style="flex: 1 1 320px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center">
+<span style="font-size: 12px; color: #55534E; width: 36px">[07]</span>
+<label for="fees" style="font-size: 14px; width: 140px">other fees</label>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #55534E">EGP <input id="fees" type="number" inputmode="decimal" value="{{fees}}" onChange="{{onFees}}" style="width: 96px; height: 40px; box-sizing: border-box; padding: 0 10px; border: 1px solid #151515; border-radius: 0; background: #F5F4F0; font-family: inherit; font-size: 14px; color: #151515"> if your forwarder charges any</span>
+</div>
+<span style="font-size: 15px; min-width: 140px; text-align: right">EGP {{feesStr}}</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; justify-content: space-between; padding: 20px 0">
+<span style="font-size: 12px; letter-spacing: 0.08em">TOTAL</span>
+<span style="font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 24px; letter-spacing: -0.01em; text-align: right">EGP {{totalStr}}</span>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.6; color: #55534E">the range comes from the category's duty band. customs decides the final category, so the real number lands somewhere inside it.</p>
+</div>
+
+<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 40px">
+
+<div style="display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #151515; font-size: 12px; letter-spacing: 0.08em">
+<span>CATEGORY</span>
+<span style="color: #55534E">[?] GUESSED</span>
+</div>
+<sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+<sc-if value="{{c.enabled}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.isOn}}" style="display: flex; gap: 14px; align-items: center; width: 100%; min-height: 48px; padding: 0; border: 0; border-bottom: 1px solid #C9C7C0; background: transparent; font-family: inherit; font-size: 14px; color: #151515; text-align: left; cursor: pointer">
+<span aria-hidden="true">{{c.mark}}</span>
+<span style="flex: 1; font-weight: {{c.weight}}">{{c.label}}</span>
+<span style="font-size: 12px; color: #55534E">{{c.range}}</span>
+</button>
+</sc-if>
+<sc-if value="{{c.disabled}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 14px; align-items: center; min-height: 48px; border-bottom: 1px solid #C9C7C0; font-size: 14px; color: #6B6964">
+<span aria-hidden="true">[–]</span>
+<span style="flex: 1">{{c.label}}</span>
+<span style="font-size: 12px">rate to be added</span>
+</div>
+</sc-if>
+</sc-for>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+<div style="padding-bottom: 12px; border-bottom: 1px solid #151515; font-size: 12px; letter-spacing: 0.08em">COMPARE</div>
+<label for="local" style="font-size: 13px; color: #3D3B37">what does a local seller charge?</label>
+<div style="display: flex; align-items: center; border: 1px solid #151515; background: #F5F4F0; height: 52px; box-sizing: border-box">
+<span style="padding: 0 0 0 14px; font-size: 13px; color: #55534E">EGP</span>
+<input id="local" type="number" inputmode="decimal" placeholder="0" value="{{local}}" onChange="{{onLocal}}" style="flex: 1; min-width: 0; height: 50px; box-sizing: border-box; padding: 0 12px; border: 0; background: transparent; font-family: inherit; font-size: 16px; color: #151515">
+</div>
+<div style="border: 1px solid {{verdictColor}}; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 12px; letter-spacing: 0.08em; color: {{verdictColor}}">{{verdictTag}}</span>
+<span style="font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em; color: {{verdictColor}}">{{verdictTitle}}</span>
+<span style="font-size: 13px; line-height: 1.6; color: #3D3B37">{{verdictBody}}</span>
+</div>
+<a href="Main.dc.html" style="font-size: 13px; padding: 6px 0">[↗] copy a link to this result</a>
+</div>
+
+</aside>
+</section>
+
+<footer style="display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; border-top: 1px solid #151515; padding: 16px 0 24px; font-size: 12px; letter-spacing: 0.06em; color: #55534E">
+<span>ESTIMATES ONLY. RATES ARE SIMPLIFIED DEMO DATA.</span>
+<span>© 2026 TRUECOST</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1320}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { cat: 'clothing', price: '79', ship: '12', fx: '50', fees: '0', local: '' };
+}
+renderVals() {
+const s = this.state;
+const num = (v) => { const n = parseFloat(v); return isFinite(n) && n > 0 ? n : 0; };
+const fmt = (n) => Math.round(n).toLocaleString('en-US');
+const cats = [
+{ id: 'clothing', label: 'clothing', range: '30–40%', low: 0.30, high: 0.40, enabled: true },
+{ id: 'cosmetics', label: 'cosmetics', range: '30–60%', low: 0.30, high: 0.60, enabled: true },
+{ id: 'phones', label: 'phones', range: '38.5% flat', flat: 0.385, enabled: true },
+{ id: 'electronics', label: 'electronics', enabled: false },
+{ id: 'books', label: 'books', enabled: false },
+{ id: 'other', label: 'other', enabled: false }
+];
+const cat = cats.find((c) => c.id === s.cat) || cats[0];
+const price = num(s.price), ship = num(s.ship), fx = num(s.fx), fees = num(s.fees), local = num(s.local);
+const item = price * fx, shipE = ship * fx, cif = item + shipE;
+let dutyL, dutyH, vatL, vatH, dutyName, dutyDetail, vatDetail;
+if (cat.flat) {
+dutyL = dutyH = cif * cat.flat; vatL = vatH = 0;
+dutyName = 'phone tax'; dutyDetail = '38.5% of cif · phones'; vatDetail = 'included in the phone tax';
+} else {
+dutyL = cif * cat.low; dutyH = cif * cat.high;
+vatL = (cif + dutyL) * 0.14; vatH = (cif + dutyH) * 0.14;
+dutyName = 'customs duty'; dutyDetail = cat.range + ' of cif · ' + cat.label; vatDetail = '14% of cif + duty';
+}
+const tL = cif + dutyL + vatL + fees, tH = cif + dutyH + vatH + fees;
+const isRange = Math.round(tL) !== Math.round(tH);
+const pair = (a, b) => (Math.round(a) === Math.round(b) ? fmt(a) : fmt(a) + ' – ' + fmt(b));
+const shelf = price * fx;
+const markup = shelf > 0 ? Math.round(((tL / shelf) - 1) * 100) + (isRange ? '–' + Math.round(((tH / shelf) - 1) * 100) : '') + '%' : '0%';
+let verdictTag = 'WAITING', verdictTitle = 'add a local price', verdictBody = 'type what a seller in egypt asks for the same item and truecost will tell you which way is cheaper.', verdictColor = '#151515';
+if (local > 0) {
+if (local < tL) {
+verdictTag = 'VERDICT'; verdictTitle = 'buy local'; verdictColor = '#C2181F';
+verdictBody = 'importing costs EGP ' + pair(tL - local, tH - local) + ' more than the local price.';
+} else if (local > tH) {
+verdictTag = 'VERDICT'; verdictTitle = 'import it'; verdictColor = '#151515';
+verdictBody = 'you save EGP ' + pair(local - tH, local - tL) + ' compared to the local price.';
+} else {
+verdictTag = 'VERDICT'; verdictTitle = 'too close to call'; verdictColor = '#151515';
+verdictBody = 'the local price sits inside the estimate range. customs will decide this one.';
+}
+}
+const set = (k) => (e) => this.setState({ [k]: e.target.value });
+return {
+cats: cats.map((c) => ({
+...c,
+disabled: !c.enabled,
+isOn: c.id === cat.id,
+mark: c.id === cat.id ? '[●]' : '[ ]',
+weight: c.id === cat.id ? '500' : '400',
+range: c.range || '',
+pick: () => this.setState({ cat: c.id })
+})),
+price: s.price, ship: s.ship, fx: s.fx, fees: s.fees, local: s.local,
+onPrice: set('price'), onShip: set('ship'), onFx: set('fx'), onFees: set('fees'), onLocal: set('local'),
+priceShown: price.toFixed(2),
+itemEgp: fmt(item), shipEgp: fmt(shipE), cifEgp: fmt(cif),
+dutyName, dutyDetail, vatDetail,
+dutyStr: pair(dutyL, dutyH), vatStr: pair(vatL, vatH), feesStr: fmt(fees),
+totalStr: pair(tL, tH), totalLow: fmt(tL), totalHigh: fmt(tH), isRange,
+markup,
+verdictTag, verdictTitle, verdictBody, verdictColor
+};
+}
+}
+</script>
+</body>
+</html>
