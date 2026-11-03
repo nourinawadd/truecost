@@ -6,7 +6,10 @@
   --color-paper: #ecebe6;
   --color-field: #f5f4f0;
   --color-ink: #151515;
+  --color-ink-soft: #3d3b37; /* secondary body text */
   --color-muted: #55534e;
+  --color-faint: #6b6964; /* placeholders and disabled */
+  --color-muted-inverse: #b9b7b0; /* muted text on the dark total panel */
   --color-rule-soft: #c9c7c0;
   --color-red: #c2181f;
 
