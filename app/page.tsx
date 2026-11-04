@@ -1,4 +1,4 @@
-// Placeholder until Phase 1: shows the tokens and both fonts working.
+// Placeholder until Phase 4: shows the tokens and both fonts working.
 export default function Home() {
   return (
     <main className="flex flex-col gap-4 px-4 py-12">
