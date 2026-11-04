@@ -11,7 +11,14 @@ export const CATEGORY_IDS = [
 
 export type CategoryId = (typeof CATEGORY_IDS)[number];
 
-export type Category = { id: CategoryId; label: string; keywords: string[] } & (
+// keywords: words that point to this category.
+// exclude: words that rule it out (an "iphone case" is not a phone).
+export type Category = {
+  id: CategoryId;
+  label: string;
+  keywords: string[];
+  exclude: string[];
+} & (
   | { kind: "band"; low: number; high: number } // duty is a range of cif
   | { kind: "flat"; rate: number } // one rate replaces duty + vat
   | { kind: "pending" } // rate to be added
@@ -29,6 +36,7 @@ export const CATEGORIES: Category[] = [
       "pants", "sweater", "coat", "skirt", "shorts", "blouse", "cardigan", "sweatshirt",
       "socks", "leggings",
     ],
+    exclude: [],
   },
   {
     id: "cosmetics",
@@ -41,6 +49,7 @@ export const CATEGORIES: Category[] = [
       "moisturiser", "cleanser", "toner", "sunscreen", "perfume", "fragrance",
       "eyeliner", "blush", "skincare", "makeup", "cream",
     ],
+    exclude: [],
   },
   {
     id: "phones",
@@ -48,9 +57,11 @@ export const CATEGORIES: Category[] = [
     kind: "flat",
     rate: 0.385,
     keywords: [
-      "phone", "smartphone", "iphone", "galaxy", "pixel", "xiaomi", "redmi", "oneplus",
-      "huawei", "oppo", "realme", "mobile", "android",
+      "smartphone", "iphone", "xiaomi", "redmi", "oneplus", "huawei", "oppo", "realme",
+      "mobile", "android",
     ],
+    // accessories are not taxed like phones
+    exclude: ["case", "cover", "buds", "earbuds", "charger", "cable"],
   },
   {
     id: "electronics",
@@ -61,18 +72,20 @@ export const CATEGORIES: Category[] = [
       "tablet", "ipad", "camera", "speaker", "smartwatch", "console", "cable",
       "router", "ssd",
     ],
+    exclude: [],
   },
   {
     id: "books",
     label: "books",
     kind: "pending",
     keywords: [
-      "book", "novel", "paperback", "hardcover", "hardback", "edition", "author",
-      "comic", "manga", "textbook", "notebook", "journal",
+      "book", "novel", "paperback", "hardcover", "hardback", "author", "comic", "manga",
+      "textbook", "journal",
     ],
+    exclude: [],
   },
   // the fallback: never wins a keyword match
-  { id: "other", label: "other", kind: "pending", keywords: [] },
+  { id: "other", label: "other", kind: "pending", keywords: [], exclude: [] },
 ];
 
 export function getCategory(id: string): Category {
