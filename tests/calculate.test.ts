@@ -5,8 +5,9 @@ import { calculateLandedCost, type CostInput } from "@/lib/cost/calculate";
 // the canvas defaults: USD 79 item, USD 12 shipping, 1 USD = 50 EGP, no fees
 const base: CostInput = {
   price: 79,
-  shipping: 12,
   fx: 50,
+  shippingUsd: 12,
+  usdFx: 50,
   category: getCategory("clothing"),
   feesEgp: 0,
 };
@@ -28,7 +29,6 @@ describe("calculateLandedCost", () => {
     // total: 4550 + 1365 + 828.1 = 6743.1, 4550 + 1820 + 891.8 = 7261.8
     expect(r.total.low).toBeCloseTo(6743.1);
     expect(r.total.high).toBeCloseTo(7261.8);
-    expect(r.isRange).toBe(true);
     expect(r.pending).toBe(false);
   });
 
@@ -46,6 +46,15 @@ describe("calculateLandedCost", () => {
     );
   });
 
+  it("prices the item in the shop's currency and shipping in USD", () => {
+    // a EUR shop: item 100 EUR × 54 = 5400, shipping 12 USD × 50 = 600, cif = 6000
+    const r = calculateLandedCost({ ...base, price: 100, fx: 54 });
+
+    expect(r.itemEgp).toBeCloseTo(5400);
+    expect(r.shippingEgp).toBeCloseTo(600);
+    expect(r.cif).toBeCloseTo(6000);
+  });
+
   it("phones: flat 38.5% replaces duty and vat, so no range", () => {
     const r = calculateLandedCost({ ...base, category: getCategory("phones") });
 
@@ -55,7 +64,6 @@ describe("calculateLandedCost", () => {
     expect(r.vat).toEqual({ low: 0, high: 0 });
     expect(r.total.low).toBeCloseTo(6301.75);
     expect(r.total.high).toBeCloseTo(6301.75);
-    expect(r.isRange).toBe(false);
   });
 
   it("pending category: flagged, no duty or vat, total is cif + fees", () => {
@@ -83,8 +91,9 @@ describe("calculateLandedCost", () => {
     for (const bad of [0, -5, NaN]) {
       const r = calculateLandedCost({
         price: bad,
-        shipping: bad,
         fx: bad,
+        shippingUsd: bad,
+        usdFx: bad,
         category: getCategory("clothing"),
         feesEgp: bad,
       });
@@ -93,7 +102,6 @@ describe("calculateLandedCost", () => {
       expect(r.duty).toEqual(zero);
       expect(r.vat).toEqual(zero);
       expect(r.total).toEqual(zero);
-      expect(r.isRange).toBe(false);
     }
   });
 });

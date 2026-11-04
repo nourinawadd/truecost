@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { getCategory } from "@/data/categories";
-import { calculateLandedCost } from "@/lib/cost/calculate";
-import { formatEgp, formatPercentRange, formatRange } from "@/lib/format";
+import { calculateLandedCost, type CostInput } from "@/lib/cost/calculate";
+import { formatEgp, formatPercentRange, formatRange, isSingleValue } from "@/lib/format";
+
+// the design canvas defaults: USD 79 item, USD 12 shipping, 1 USD = 50 EGP
+const canvas: CostInput = {
+  price: 79,
+  fx: 50,
+  shippingUsd: 12,
+  usdFx: 50,
+  category: getCategory("clothing"),
+  feesEgp: 0,
+};
 
 describe("formatEgp", () => {
   it("groups thousands with commas and drops decimals", () => {
@@ -28,14 +38,27 @@ describe("formatRange", () => {
   });
 
   it("matches the design canvas for the clothing defaults", () => {
-    const r = calculateLandedCost({
-      price: 79,
-      shipping: 12,
-      fx: 50,
-      category: getCategory("clothing"),
-      feesEgp: 0,
-    });
-    expect(formatRange(r.total)).toBe("6,743 – 7,262");
+    expect(formatRange(calculateLandedCost(canvas).total)).toBe("6,743 – 7,262");
+  });
+});
+
+describe("isSingleValue", () => {
+  it("a 0.01 USD item: the ends differ but both round to 1, so one value", () => {
+    // cif 0.01 × 50 = 0.5
+    // low: 0.5 + 0.15 + (0.65 × 0.14 = 0.091) = 0.741
+    // high: 0.5 + 0.2 + (0.7 × 0.14 = 0.098) = 0.798
+    const r = calculateLandedCost({ ...canvas, price: 0.01, shippingUsd: 0 });
+    expect(r.total.low).not.toBe(r.total.high);
+    expect(isSingleValue(r.total)).toBe(true);
+  });
+
+  it("the clothing defaults are a range", () => {
+    expect(isSingleValue(calculateLandedCost(canvas).total)).toBe(false);
+  });
+
+  it("phones are one value", () => {
+    const r = calculateLandedCost({ ...canvas, category: getCategory("phones") });
+    expect(isSingleValue(r.total)).toBe(true);
   });
 });
 
