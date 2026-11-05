@@ -4,8 +4,13 @@
 export function parsePrice(raw: string | null | undefined): number | null {
   if (!raw) return null;
 
-  const cleaned = raw.replace(/[^\d.,]/g, "");
-  if (!/\d/.test(cleaned)) return null;
+  // Only the first number: "$12.99 - $19.99" is a range, not 129991999.
+  // A separator must sit between digits; a space counts only when three
+  // digits follow it, like the thousands space in "1 299,50".
+  const first = raw.match(/\d(?:[.,]?\d|[   ](?=\d{3}(?!\d)))*/);
+  if (!first) return null;
+
+  const cleaned = first[0].replace(/[^\d.,]/g, "");
 
   const lastComma = cleaned.lastIndexOf(",");
   const lastDot = cleaned.lastIndexOf(".");
@@ -42,12 +47,17 @@ function disambiguate(cleaned: string, separator: string): string {
 // A bare ¥ is not here on purpose: it could be CNY or JPY (see CLAUDE.md).
 const SYMBOLS: Record<string, string> = { $: "USD", "€": "EUR", "£": "GBP" };
 
-// "EUR 12" → "EUR", "$12" → "USD", "¥1200" → null
+// "EUR 12" → "EUR", "$12" → "USD", "¥1200" → null, "CA$12" → null
 export function parseCurrency(raw: string | null | undefined): string | null {
   if (!raw) return null;
 
   const letters = raw.replace(/[^a-z]/gi, "");
   if (letters.length === 3) return letters.toUpperCase();
+
+  // "CA$", "A$", "HK$", "R$": a dollar, but not the US one. We don't guess
+  // which, the user picks. Only "US$" counts as USD.
+  const prefixed = raw.match(/([a-z]+)\$/i);
+  if (prefixed) return prefixed[1].toUpperCase() === "US" ? "USD" : null;
 
   for (const [symbol, code] of Object.entries(SYMBOLS)) {
     if (raw.includes(symbol)) return code;

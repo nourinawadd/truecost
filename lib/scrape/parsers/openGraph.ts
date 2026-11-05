@@ -13,8 +13,8 @@ export const openGraphParser: Parser = {
     if (!$) return null;
 
     const amount = meta($, "product:price:amount") ?? meta($, "og:price:amount");
-    const info: ProductInfo = {
-      title: meta($, "og:title") ?? clean($("title").first().text()),
+    const tags: ProductInfo = {
+      title: meta($, "og:title"),
       brand: meta($, "og:site_name"),
       image: meta($, "og:image"),
       price: parsePrice(amount) ?? undefined,
@@ -25,7 +25,9 @@ export const openGraphParser: Parser = {
         undefined,
     };
 
-    return Object.values(info).some((v) => v !== undefined) ? info : null;
+    // every page has a <title>, so it alone doesn't count as finding anything
+    if (Object.values(tags).every((v) => v === undefined)) return null;
+    return { ...tags, title: tags.title ?? clean($("title").first().text()) };
   },
 };
 

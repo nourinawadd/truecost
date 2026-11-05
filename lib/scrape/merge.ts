@@ -21,25 +21,12 @@ export function mergeProduct(results: ParserResult[], pageUrl: URL): Merged {
   for (const { parser, info: found } of results) {
     for (const field of FIELDS) {
       if (info[field] !== undefined) continue;
-      const value = usable(found[field]);
+      const value = usable(field, found[field], pageUrl);
       if (value === undefined) continue;
 
       Object.assign(info, { [field]: value });
       sources[field] = parser.name;
       if (parser.strong) strong = true;
-    }
-  }
-
-  if (info.currency) info.currency = info.currency.toUpperCase();
-
-  // pages often give "/img/shirt.jpg": resolve it against the page.
-  // Anything that isn't http(s) is dropped, so we never render odd schemes.
-  if (info.image) {
-    const absolute = absoluteHttpUrl(info.image, pageUrl);
-    if (absolute) info.image = absolute;
-    else {
-      delete info.image;
-      delete sources.image;
     }
   }
 
@@ -51,11 +38,19 @@ export function mergeProduct(results: ParserResult[], pageUrl: URL): Merged {
   };
 }
 
-// blank strings and zero or broken prices don't count as found
-function usable(value: string | number | undefined): string | number | undefined {
-  if (typeof value === "string") return value.trim() || undefined;
+// The cleaned-up value, or undefined when it doesn't count as found, so a
+// later parser gets its turn: blank strings, zero or broken prices, and
+// images that aren't http(s).
+function usable(field: Field, value: string | number | undefined, pageUrl: URL) {
   if (typeof value === "number") return Number.isFinite(value) && value > 0 ? value : undefined;
-  return undefined;
+  if (typeof value !== "string" || !value.trim()) return undefined;
+
+  const text = value.trim();
+  if (field === "currency") return text.toUpperCase();
+  // pages often give "/img/shirt.jpg": resolve it against the page.
+  // Anything that isn't http(s) is dropped, so we never render odd schemes.
+  if (field === "image") return absoluteHttpUrl(text, pageUrl) ?? undefined;
+  return text;
 }
 
 function absoluteHttpUrl(raw: string, base: URL): string | null {

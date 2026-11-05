@@ -29,14 +29,14 @@ export async function scrapeProduct(
   const results: ParserResult[] = [];
   const complete = () => mergeProduct(results, url).isComplete;
 
+  // Many non-Shopify shops also use /products/x links, so a miss here is
+  // normal and stays out of the log: only a real answer proves it's Shopify.
   if (matchesShopify(url)) {
-    step("shopify storefront detected");
     const info = await shopifyParser.parse(ctx);
     if (info) {
       results.push({ parser: shopifyParser, info });
+      step("shopify storefront detected");
       step("product data read");
-    } else {
-      step("shopify product data unavailable", false);
     }
   }
 

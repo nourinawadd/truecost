@@ -63,6 +63,18 @@ describe("mergeProduct", () => {
     expect(m.sources.image).toBeUndefined();
   });
 
+  it("a bad image from an earlier parser lets the next parser's image win", () => {
+    const m = mergeProduct(
+      [
+        { parser: jsonLd, info: { title: "x", image: "data:image/png;base64,AAAA" } },
+        { parser: og, info: { image: "/img/shirt.jpg" } },
+      ],
+      page,
+    );
+    expect(m.info.image).toBe("https://shop.example.com/img/shirt.jpg");
+    expect(m.sources.image).toBe("open-graph");
+  });
+
   it("skips blanks and zero prices, so a later parser can fill them", () => {
     const m = mergeProduct(
       [

@@ -20,6 +20,14 @@ describe("parsePrice", () => {
     expect(parsePrice("12.5")).toBe(12.5);
   });
 
+  it("reads only the first number, so a range doesn't glue into one", () => {
+    expect(parsePrice("$12.99 - $19.99")).toBe(12.99);
+    expect(parsePrice("12.99-19.99")).toBe(12.99);
+    expect(parsePrice("from 12,99 € to 19,99 €")).toBe(12.99);
+    expect(parsePrice("12.99. free shipping")).toBe(12.99); // trailing dot isn't a separator
+    expect(parsePrice("1 299 999,00")).toBe(1299999);
+  });
+
   it("garbage gives null", () => {
     expect(parsePrice("free")).toBeNull();
     expect(parsePrice(".,")).toBeNull();
@@ -43,6 +51,13 @@ describe("parseCurrency", () => {
 
   it("a bare ¥ is unknown: it could be CNY or JPY", () => {
     expect(parseCurrency("¥1200")).toBeNull();
+  });
+
+  it("a dollar with letters in front is not USD, unless it's US$", () => {
+    expect(parseCurrency("US$12")).toBe("USD");
+    expect(parseCurrency("CA$12")).toBeNull();
+    expect(parseCurrency("A$ 30")).toBeNull();
+    expect(parseCurrency("HK$99")).toBeNull();
   });
 
   it("unknown or empty gives null", () => {

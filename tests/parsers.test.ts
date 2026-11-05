@@ -152,8 +152,13 @@ describe("open graph", () => {
     expect(info?.currency).toBe("USD");
   });
 
-  it("falls back to <title>, and gives null for a page with nothing", async () => {
-    expect((await openGraphParser.parse(ctx(fixture("empty.html"))))?.title).toBe("Example Shop");
+  it("falls back to <title> when there are other tags", async () => {
+    const html = `<title>Cap | Shop</title><meta property="og:image" content="/cap.jpg">`;
+    expect((await openGraphParser.parse(ctx(html)))?.title).toBe("Cap | Shop");
+  });
+
+  it("gives null when there are no og or product tags, even with a <title>", async () => {
+    expect(await openGraphParser.parse(ctx(fixture("empty.html")))).toBeNull();
     expect(await openGraphParser.parse(ctx("<html><body></body></html>"))).toBeNull();
   });
 });
@@ -227,9 +232,10 @@ describe("scrapeProduct", () => {
     expect(r.steps.at(-1)).toMatchObject({ text: "no price on this page", ok: false });
   });
 
-  it("shopify endpoint failing shows as a failed step", async () => {
+  it("a /products/ link that isn't shopify: no shopify step, no failure", async () => {
     const r = await scrapeProduct(new URL(PAGE), fixture("jsonld-product.html"), noNetwork);
-    expect(r.steps[1]).toMatchObject({ text: "shopify product data unavailable", ok: false });
-    expect(r.info.price).toBe(79); // json-ld still found it
+    expect(texts(r.steps).some((t) => t.includes("shopify"))).toBe(false);
+    expect(r.steps.every((s) => s.ok)).toBe(true);
+    expect(r.info.price).toBe(79); // json-ld found it
   });
 });
