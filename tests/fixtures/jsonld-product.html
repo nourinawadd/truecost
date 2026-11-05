@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>Linen Overshirt | Example Shop</title>
+<!-- broken JSON first: it must not stop the next script -->
+<script type="application/ld+json">{ "@type": "Product", "name": </script>
+<!-- the description has a raw line break inside a string, which JSON forbids -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Linen Overshirt",
+  "description": "light linen,
+made for summer",
+  "brand": { "@type": "Brand", "name": "Example Co" },
+  "image": ["https://shop.example.com/img/overshirt.jpg", "https://shop.example.com/img/overshirt-2.jpg"],
+  "offers": { "@type": "Offer", "price": "79.00", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body><h1>Linen Overshirt</h1></body>
+</html>
