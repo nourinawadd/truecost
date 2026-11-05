@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Mono, Inter_Tight } from "next/font/google";
+import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
 
 const dmMono = DM_Mono({
@@ -22,7 +23,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${dmMono.variable} ${interTight.variable}`}>
-      <body className="bg-paper text-ink font-mono antialiased">{children}</body>
+      <body className="bg-paper text-ink font-mono antialiased">
+        {/* every page: its own header, its content, then the same footer */}
+        <div className="flex min-h-dvh flex-col px-[5%]">
+          {children}
+          <SiteFooter />
+        </div>
+      </body>
     </html>
   );
 }

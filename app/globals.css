@@ -16,6 +16,18 @@
   /* no border radius anywhere */
   --radius-*: initial;
   --radius: 0;
+
+  /* the UPPERCASE mono label: use as text-label */
+  --text-label: 12px;
+  --text-label--letter-spacing: 0.08em;
+
+  /* the cursor at the end of "reading <shop>" */
+  --animate-blink: blink 1s steps(2, start) infinite;
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
 }
 
 /* inline: these point at the variables next/font sets on <html> */
@@ -28,5 +40,15 @@
   :focus-visible {
     outline: 2px solid var(--color-red);
     outline-offset: 2px;
+  }
+
+  /* red is kept for warnings, so links only underline on hover */
+  a:hover {
+    text-decoration-line: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  input::placeholder {
+    color: var(--color-faint);
   }
 }
