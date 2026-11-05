@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { getCategory } from "@/data/categories";
 import { calculateLandedCost, type CostInput } from "@/lib/cost/calculate";
-import { formatEgp, formatPercentRange, formatRange, isSingleValue } from "@/lib/format";
+import {
+  formatEgp,
+  formatPercentRange,
+  formatRange,
+  formatRate,
+  formatShortDate,
+  isSingleValue,
+} from "@/lib/format";
 
 // the design canvas defaults: USD 79 item, USD 12 shipping, 1 USD = 50 EGP
 const canvas: CostInput = {
@@ -73,5 +80,23 @@ describe("formatPercentRange", () => {
 
   it("shows one percent when both ends round the same", () => {
     expect(formatPercentRange({ low: 0.712, high: 0.714 })).toBe("71%");
+  });
+});
+
+describe("formatRate", () => {
+  it("reads like the category picker on the canvas", () => {
+    expect(formatRate(getCategory("clothing"))).toBe("30–40%");
+    expect(formatRate(getCategory("cosmetics"))).toBe("30–60%");
+    expect(formatRate(getCategory("electronics"))).toBe("rate to be added");
+  });
+
+  it("keeps the half percent on phones instead of rounding to 39%", () => {
+    expect(formatRate(getCategory("phones"))).toBe("38.5%");
+  });
+});
+
+describe("formatShortDate", () => {
+  it("writes an iso date as dd.mm.yy", () => {
+    expect(formatShortDate("2026-11-01")).toBe("01.11.26");
   });
 });

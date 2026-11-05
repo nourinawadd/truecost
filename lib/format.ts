@@ -1,3 +1,4 @@
+import type { Category } from "@/data/categories";
 import type { Range } from "@/lib/cost/calculate";
 
 // 7911.5 → "7,912". Rounding ourselves keeps halves going up.
@@ -20,4 +21,19 @@ export function formatPercentRange(r: Range): string {
   const low = Math.round(r.low * 100);
   const high = Math.round(r.high * 100);
   return low === high ? `${low}%` : `${low}–${high}%`;
+}
+
+// A category's duty rule as people read it: "30–40%", "38.5%", or
+// "rate to be added". Keeps one decimal, which formatPercentRange would round off.
+export function formatRate(category: Category): string {
+  const pct = (fraction: number) => Number((fraction * 100).toFixed(1));
+  if (category.kind === "band") return `${pct(category.low)}–${pct(category.high)}%`;
+  if (category.kind === "flat") return `${pct(category.rate)}%`;
+  return "rate to be added";
+}
+
+// "2026-11-01" → "01.11.26", the way the design writes dates
+export function formatShortDate(iso: string): string {
+  const [year, month, day] = iso.split("-");
+  return `${day}.${month}.${year.slice(2)}`;
 }

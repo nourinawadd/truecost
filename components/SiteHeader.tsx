@@ -1,13 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { FX_AS_OF } from "@/data/config";
-
-// "2026-11-01" → "01.11.26", the way the design writes dates
-const [year, month, day] = FX_AS_OF.split("-");
-const RATES_DATE = `${day}.${month}.${year.slice(2)}`;
+import { formatShortDate } from "@/lib/format";
 
 export function RatesAsOf() {
-  return <span className="text-muted">[✦] RATES AS OF {RATES_DATE}</span>;
+  return <span className="text-muted">[✦] RATES AS OF {formatShortDate(FX_AS_OF)}</span>;
 }
 
 // The wordmark and label on the left. The right side changes per page,
