@@ -11,9 +11,6 @@ const CURRENCIES = Object.keys(FX_RATES) as Currency[];
 
 const FIELD = "h-12 w-full min-w-0 border border-ink bg-field px-3.5 text-[15px]";
 
-// For shops that block the reader, or no link at all. Everything here is
-// typed by the user, so the result page shows no [✓] or [?] marks.
-// The form isn't controlled: we read it once, on submit.
 export function ManualEntry({ shop }: { shop?: string }) {
   const router = useRouter();
   const [priceMissing, setPriceMissing] = useState(false);
@@ -22,7 +19,6 @@ export function ManualEntry({ shop }: { shop?: string }) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
 
-    // parsePrice reads "12,99" and "1,299.00" the same way the scraper does
     const price = parsePrice(String(form.get("price")));
     if (!price) {
       setPriceMissing(true);
@@ -31,7 +27,6 @@ export function ManualEntry({ shop }: { shop?: string }) {
 
     const cur = form.get("currency") as Currency;
     const band = SHIPPING_BANDS.find((b) => b.id === form.get("weight"));
-    // shipping is always USD; left empty, the weight band estimates it
     const ship = parsePrice(String(form.get("shipping"))) ?? band?.usd ?? DEFAULT_SHIP_USD;
 
     router.push(

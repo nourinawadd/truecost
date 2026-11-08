@@ -3,12 +3,10 @@ import { formatRate } from "@/lib/format";
 
 type Props = {
   selected: CategoryId;
-  guessed: boolean; // the reader picked it from the title; the user hasn't yet
+  guessed: boolean;
   onPick(id: CategoryId): void;
 };
 
-// The bracket list. Categories with a rate are real toggle buttons;
-// the ones still waiting for a rate are greyed-out rows you can't press.
 export function CategoryPicker({ selected, guessed, onPick }: Props) {
   return (
     <div className="flex flex-col">
@@ -29,7 +27,10 @@ export function CategoryPicker({ selected, guessed, onPick }: Props) {
               <span aria-hidden="true" className="shrink-0 whitespace-pre">
                 {on ? "[●]" : "[–]"}
               </span>
-              <span className="flex-1">{category.label}</span>
+              <span className="flex-1">
+                {category.label}
+                {on && <span className="sr-only"> (selected)</span>}
+              </span>
               <span className="text-xs">rate to be added</span>
             </div>
           );

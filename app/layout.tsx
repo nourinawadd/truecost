@@ -14,17 +14,21 @@ const interTight = Inter_Tight({
   subsets: ["latin"],
 });
 
+const title = "TrueCost";
+const description =
+  "know the real price before it lands. estimated duty, vat and shipping for orders to egypt.";
+
 export const metadata: Metadata = {
-  title: "TrueCost",
-  description:
-    "know the real price before it lands. estimated duty, vat and shipping for orders to egypt.",
+  metadataBase: new URL("https://truecost-credosis.vercel.app"),
+  title,
+  description,
+  openGraph: { title, description, url: "/", siteName: title, locale: "en_US", type: "website" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${dmMono.variable} ${interTight.variable}`}>
       <body className="bg-paper text-ink font-mono antialiased">
-        {/* every page: its own header, its content, then the same footer */}
         <div className="flex min-h-dvh flex-col px-[5%]">
           {children}
           <SiteFooter />

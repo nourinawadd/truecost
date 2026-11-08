@@ -14,16 +14,10 @@ import { compareWithLocal } from "@/lib/cost/verdict";
 import { buildResultUrl, type MarkedField, type ResultParams, type Src } from "@/lib/resultUrl";
 import { parsePrice } from "@/lib/scrape/price";
 
-// Why the page can't show a total: no exchange rate for the shop's
-// currency, or no duty rate for the category. null means it can.
-export type Blocked = "currency" | "rate" | null;
+export type Blocked = "currency" | "price" | "rate" | null;
 
 export type TextField = "price" | "ship" | "fx" | "fees" | "local";
 
-// The interactive part of the result page. It keeps the boxes as typed text
-// (so "12." or an empty box works), works out the numbers on every render,
-// and writes the state back into the url so a refresh or a shared link
-// shows the same result.
 export function ResultView({ initial }: { initial: ResultParams }) {
   const router = useRouter();
   const [texts, setTexts] = useState<Record<TextField, string>>({
@@ -37,8 +31,6 @@ export function ResultView({ initial }: { initial: ResultParams }) {
   const [cat, setCat] = useState(initial.cat);
   const [src, setSrc] = useState(initial.src);
 
-  // money boxes read "12,99" or "1,299.00" like the manual form does.
-  // The rate is a plain decimal: "0.345" is a rate, not 345.
   const price = parsePrice(texts.price) ?? 0;
   const ship = parsePrice(texts.ship) ?? 0;
   const fees = parsePrice(texts.fees) ?? 0;
@@ -47,7 +39,6 @@ export function ResultView({ initial }: { initial: ResultParams }) {
   const fx = texts.fx.trim() && typedFx > 0 ? typedFx : null;
 
   const category = getCategory(cat);
-  // shipping is quoted in USD. For a USD shop the rate box is the USD rate.
   const usdFx = cur === "USD" && fx ? fx : FX_RATES.USD;
   const breakdown = calculateLandedCost({
     price,
@@ -58,7 +49,8 @@ export function ResultView({ initial }: { initial: ResultParams }) {
     feesEgp: fees,
   });
   const verdict = compareWithLocal(breakdown.total, local, breakdown.pending);
-  const blocked: Blocked = fx === null ? "currency" : breakdown.pending ? "rate" : null;
+  const blocked: Blocked =
+    fx === null ? "currency" : price <= 0 ? "price" : breakdown.pending ? "rate" : null;
 
   const href = buildResultUrl({
     price,
@@ -74,8 +66,6 @@ export function ResultView({ initial }: { initial: ResultParams }) {
     src,
   });
 
-  // Keep the url in step: 300ms after the last keystroke, or at once for a
-  // click (category, currency). replace, not push: edits aren't new pages.
   const urgent = useRef(false);
   useEffect(() => {
     if (href === location.pathname + location.search) return;
@@ -87,7 +77,6 @@ export function ResultView({ initial }: { initial: ResultParams }) {
 
   function setText(field: TextField, value: string) {
     setTexts((t) => ({ ...t, [field]: value }));
-    // an edited price no longer came from the shop
     if (field === "price") setSrc((s) => unmark(s, "price"));
   }
 
@@ -144,7 +133,6 @@ export function ResultView({ initial }: { initial: ResultParams }) {
   );
 }
 
-// the same marks without one field: it's the user's value now
 function unmark(src: Src, field: MarkedField): Src {
   const next = { ...src };
   delete next[field];

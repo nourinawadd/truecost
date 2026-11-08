@@ -4,7 +4,7 @@ import type { Verdict } from "@/lib/cost/verdict";
 import { formatRange } from "@/lib/format";
 
 type Props = {
-  local: string; // the box as typed
+  local: string;
   onLocal(value: string): void;
   verdict: Verdict;
   blocked: Blocked;
@@ -12,7 +12,6 @@ type Props = {
   shareHref: string;
 };
 
-// The local price box and the verdict. Red only when buying local wins.
 export function ComparePanel({ local, onLocal, verdict, blocked, categoryLabel, shareHref }: Props) {
   const { tag, title, body } = describe(verdict, blocked, categoryLabel);
   const red = verdict.kind === "buy-local" && blocked === null;
@@ -39,6 +38,7 @@ export function ComparePanel({ local, onLocal, verdict, blocked, categoryLabel, 
 
       <div
         aria-live="polite"
+        aria-atomic="true"
         className={`flex flex-col gap-2.5 border p-5 ${red ? "border-red" : "border-ink"}`}
       >
         <span className={`text-label ${red ? "text-red" : ""}`}>{tag}</span>
@@ -55,13 +55,19 @@ export function ComparePanel({ local, onLocal, verdict, blocked, categoryLabel, 
   );
 }
 
-// the words for each verdict, as on the design canvas
 function describe(verdict: Verdict, blocked: Blocked, categoryLabel: string) {
   if (blocked === "currency") {
     return {
       tag: "WAITING",
       title: "pick the currency first",
       body: "truecost needs the shop's currency before it can compare prices.",
+    };
+  }
+  if (blocked === "price") {
+    return {
+      tag: "WAITING",
+      title: "add the item price first",
+      body: "truecost needs the item price before it can compare prices.",
     };
   }
 

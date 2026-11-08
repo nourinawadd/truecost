@@ -2,8 +2,6 @@ import type { CheerioAPI } from "cheerio";
 import { parseCurrency, parsePrice } from "@/lib/scrape/price";
 import type { Parser, ProductInfo } from "@/lib/scrape/types";
 
-// <meta property="og:..."> tags meant for link previews. A weak source: they
-// are often stale or generic, so the UI asks the user to check what came from here.
 export const openGraphParser: Parser = {
   name: "open-graph",
   strong: false,
@@ -25,13 +23,11 @@ export const openGraphParser: Parser = {
         undefined,
     };
 
-    // every page has a <title>, so it alone doesn't count as finding anything
     if (Object.values(tags).every((v) => v === undefined)) return null;
     return { ...tags, title: tags.title ?? clean($("title").first().text()) };
   },
 };
 
-// shops use property= (the spec) or name= (common mistake); accept both
 function meta($: CheerioAPI, key: string): string | undefined {
   const content =
     $(`meta[property="${key}"]`).attr("content") ?? $(`meta[name="${key}"]`).attr("content");

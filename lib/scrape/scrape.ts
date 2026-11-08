@@ -5,17 +5,13 @@ import { openGraphParser } from "@/lib/scrape/parsers/openGraph";
 import { matchesShopify, shopifyParser } from "@/lib/scrape/parsers/shopify";
 import type { ProductInfo, ScrapeContext, Sources, Step } from "@/lib/scrape/types";
 
-export type ScrapeResult = {
+type ScrapeResult = {
   info: ProductInfo;
   sources: Sources;
   strong: boolean;
   steps: Step[];
 };
 
-// The ladder from HOLD: Shopify → JSON-LD → OpenGraph, stopping as soon as
-// every field is found. `html` is null when the shop blocked the page; the
-// Shopify endpoint can still answer then. `startedAt` lets the caller put its
-// own fetch steps on the same clock.
 export async function scrapeProduct(
   url: URL,
   html: string | null,
@@ -29,8 +25,6 @@ export async function scrapeProduct(
   const results: ParserResult[] = [];
   const complete = () => mergeProduct(results, url).isComplete;
 
-  // Many non-Shopify shops also use /products/x links, so a miss here is
-  // normal and stays out of the log: only a real answer proves it's Shopify.
   if (matchesShopify(url)) {
     const info = await shopifyParser.parse(ctx);
     if (info) {

@@ -4,7 +4,6 @@ import type { Parser } from "@/lib/scrape/types";
 
 const page = new URL("https://shop.example.com/products/overshirt");
 
-// fake parsers: the merge only looks at name and strong
 const shopify: Parser = { name: "shopify", strong: true, parse: async () => null };
 const jsonLd: Parser = { name: "json-ld", strong: true, parse: async () => null };
 const og: Parser = { name: "open-graph", strong: false, parse: async () => null };

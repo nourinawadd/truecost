@@ -13,7 +13,6 @@ describe("guessCategory", () => {
   });
 
   it("matches whole words only", () => {
-    // "tee" is a clothing keyword, but not inside "teeth" or "committee"
     expect(guessCategory("Teeth whitening kit for the committee")).toBeNull();
   });
 
@@ -24,7 +23,6 @@ describe("guessCategory", () => {
   it("an exclude word rules a category out", () => {
     expect(guessCategory("iPhone 15 Pro")?.id).toBe("phones");
     expect(guessCategory("iPhone 15 Pro silicone case")).toBeNull();
-    // earbuds aren't a phone, but they are electronics
     expect(guessCategory("Redmi wireless earbuds")?.id).toBe("electronics");
   });
 

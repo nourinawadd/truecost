@@ -1,27 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* only our tokens: drop tailwind's default palette */
   --color-*: initial;
   --color-paper: #ecebe6;
   --color-field: #f5f4f0;
   --color-ink: #151515;
-  --color-ink-soft: #3d3b37; /* secondary body text */
+  --color-ink-soft: #3d3b37;
   --color-muted: #55534e;
-  --color-faint: #6b6964; /* placeholders and disabled */
-  --color-muted-inverse: #b9b7b0; /* muted text on the dark total panel */
+  --color-faint: #6b6964;
+  --color-muted-inverse: #b9b7b0;
   --color-rule-soft: #c9c7c0;
   --color-red: #c2181f;
 
-  /* no border radius anywhere */
   --radius-*: initial;
   --radius: 0;
 
-  /* the UPPERCASE mono label: use as text-label */
   --text-label: 12px;
   --text-label--letter-spacing: 0.08em;
 
-  /* the cursor at the end of "reading <shop>" */
   --animate-blink: blink 1s steps(2, start) infinite;
   @keyframes blink {
     to {
@@ -30,7 +26,6 @@
   }
 }
 
-/* inline: these point at the variables next/font sets on <html> */
 @theme inline {
   --font-mono: var(--font-dm-mono), ui-monospace, monospace;
   --font-display: var(--font-inter-tight), sans-serif;
@@ -42,7 +37,6 @@
     outline-offset: 2px;
   }
 
-  /* red is kept for warnings, so links only underline on hover */
   a:hover {
     text-decoration-line: underline;
     text-underline-offset: 0.2em;

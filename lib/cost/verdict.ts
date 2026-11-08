@@ -1,14 +1,12 @@
 import type { Range } from "@/lib/cost/calculate";
 
 export type Verdict =
-  | { kind: "pending" } // the category has no rate yet, so nothing to compare
-  | { kind: "none" } // no local price yet
-  | { kind: "buy-local"; extra: Range } // how much more importing costs
-  | { kind: "import"; saves: Range } // how much importing saves
-  | { kind: "too-close" }; // the local price sits inside the estimate
+  | { kind: "pending" }
+  | { kind: "none" }
+  | { kind: "buy-local"; extra: Range }
+  | { kind: "import"; saves: Range }
+  | { kind: "too-close" };
 
-// Same rules as the calculator in design/Result.dc.html.
-// `pending` is the breakdown's flag: without a rate the total has no duty in it.
 export function compareWithLocal(
   total: Range,
   localEgp: number | null,

@@ -18,15 +18,13 @@ type Props = {
   blocked: Blocked;
 };
 
-// The ledger from the design: rows [01] to [07], then the total.
-// Item price, shipping, exchange rate and fees can be edited in place.
 export function CostBreakdown({ texts, onText, cur, onCurrency, breakdown: b, category, blocked }: Props) {
   const flat = category.kind === "flat";
-  // what to show where a number can't be worked out yet
   const noFx = "—";
   const noRate = "rate to be added";
   const egp = (n: number) => `EGP ${formatEgp(n)}`;
-  const taxed = (text: string) => (blocked === "currency" ? noFx : blocked === "rate" ? noRate : text);
+  const taxed = (text: string) =>
+    blocked === "currency" || blocked === "price" ? noFx : blocked === "rate" ? noRate : text;
 
   const input = (field: TextField) => (
     <input
@@ -117,19 +115,16 @@ type RowProps = {
   n: string;
   label: ReactNode;
   amount: ReactNode;
-  rule?: string; // the line under the row: soft by default
-  children: ReactNode; // the detail: inputs or a note
+  rule?: string;
+  children: ReactNode;
 };
 
-// One ledger row. On a phone the number, label and detail share the first
-// line and the amount wraps underneath, right-aligned.
 function Row({ n, label, amount, rule = "border-rule-soft", children }: RowProps) {
   return (
     <div className={`flex flex-wrap items-center gap-x-6 gap-y-2 border-b py-4 ${rule}`}>
       <div className="flex min-w-0 flex-[1_1_320px] flex-wrap items-center gap-x-3 gap-y-2 sm:gap-x-4">
         <span className="w-8 shrink-0 text-xs text-muted">[{n}]</span>
         <span className="w-28 shrink-0 text-sm sm:w-[140px]">{label}</span>
-        {/* basis 0: it stays next to the label and wraps inside itself */}
         <span className="flex min-w-0 flex-[1_1_0%] flex-wrap items-center gap-2 text-[13px] text-muted">
           {children}
         </span>

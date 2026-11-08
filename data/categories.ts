@@ -1,5 +1,3 @@
-// Duty rule per category. Simplified demo data, not an official customs tariff.
-
 export const CATEGORY_IDS = [
   "clothing",
   "cosmetics",
@@ -11,17 +9,15 @@ export const CATEGORY_IDS = [
 
 export type CategoryId = (typeof CATEGORY_IDS)[number];
 
-// keywords: words that point to this category.
-// exclude: words that rule it out (an "iphone case" is not a phone).
 export type Category = {
   id: CategoryId;
   label: string;
   keywords: string[];
   exclude: string[];
 } & (
-  | { kind: "band"; low: number; high: number } // duty is a range of cif
-  | { kind: "flat"; rate: number } // one rate replaces duty + vat
-  | { kind: "pending" } // rate to be added
+  | { kind: "band"; low: number; high: number }
+  | { kind: "flat"; rate: number }
+  | { kind: "pending" }
 );
 
 export const CATEGORIES: Category[] = [
@@ -60,7 +56,6 @@ export const CATEGORIES: Category[] = [
       "smartphone", "iphone", "xiaomi", "redmi", "oneplus", "huawei", "oppo", "realme",
       "mobile", "android",
     ],
-    // accessories are not taxed like phones
     exclude: ["case", "cover", "buds", "earbuds", "charger", "cable"],
   },
   {
@@ -84,7 +79,6 @@ export const CATEGORIES: Category[] = [
     ],
     exclude: [],
   },
-  // the fallback: never wins a keyword match
   { id: "other", label: "other", kind: "pending", keywords: [], exclude: [] },
 ];
 

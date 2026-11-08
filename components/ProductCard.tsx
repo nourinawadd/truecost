@@ -5,8 +5,6 @@ import type { Src } from "@/lib/resultUrl";
 
 type Props = { title?: string; img?: string; shop?: string; src: Src };
 
-// The product as the shop shows it, plus chips saying which values were
-// read from the shop [✓] and which are guesses to check [?].
 export function ProductCard({ title, img, shop, src }: Props) {
   const [broken, setBroken] = useState(false);
 
@@ -20,17 +18,11 @@ export function ProductCard({ title, img, shop, src }: Props) {
     <div className="flex min-w-0 flex-[999_1_480px] flex-wrap items-start gap-6">
       <div className="relative size-[132px] shrink-0 border border-ink bg-field">
         {img && !broken ? (
-          // A plain <img>: images come from any shop's CDN, and next/image
-          // would need every host allow-listed. no-referrer, because some
-          // CDNs refuse images linked from other sites.
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={img}
             alt=""
             referrerPolicy="no-referrer"
             onError={() => setBroken(true)}
-            // an image that failed before React took over the page never
-            // fires onError for us: "complete" with no width means it broke
             ref={(el) => {
               if (el?.complete && el.naturalWidth === 0) setBroken(true);
             }}

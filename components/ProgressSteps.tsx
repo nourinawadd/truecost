@@ -3,11 +3,9 @@ import type { Step } from "@/lib/scrape/types";
 
 type Props = {
   steps: Step[];
-  reading?: string; // the shop's host while we wait for the answer
+  reading?: string;
 };
 
-// The bracket log: what the reader did, and when. Read out politely to
-// screen readers as it changes.
 export function ProgressSteps({ steps, reading }: Props) {
   return (
     <ol aria-live="polite" className="flex flex-col text-sm">

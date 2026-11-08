@@ -11,7 +11,6 @@ import { RatesAsOf, SiteHeader } from "@/components/SiteHeader";
 import { buildResultUrl, DEFAULT_SHIP_USD, rateFor, sourcesToSrc } from "@/lib/resultUrl";
 import type { Step } from "@/lib/scrape/types";
 
-// "network": our own API didn't answer, so there is no reason from the shop
 type Failure = ReadFailure | "network";
 
 type State =
@@ -19,7 +18,6 @@ type State =
   | { status: "reading"; url: URL }
   | { status: "failed"; url: URL; reason: Failure; steps: Step[] };
 
-// the headline on the failed screen, one human sentence per reason
 const HEADLINE: Record<Failure, string> = {
   blocked: "this shop hides its details from readers.",
   challenge: "this shop hides its details from readers.",
@@ -32,8 +30,6 @@ const HEADLINE: Record<Failure, string> = {
   network: "something went wrong on our side.",
 };
 
-// Home: idle → reading → the result page, or the failed screen with the
-// manual form. The link is kept in state so [←] back doesn't lose it.
 export default function Home() {
   const router = useRouter();
   const [link, setLink] = useState("");
@@ -48,8 +44,6 @@ export default function Home() {
       return;
     }
 
-    // fx is written into the url, so a shared link keeps today's rate.
-    // We stay on "reading" until the result page takes over.
     const { product, category } = answer;
     router.push(
       buildResultUrl({
@@ -105,9 +99,9 @@ export default function Home() {
   return (
     <>
       <SiteHeader>
-        <a href="#how" className="inline-flex min-h-11 items-center">
+        <Link href="/how" className="inline-flex min-h-11 items-center">
           HOW IT WORKS
-        </a>
+        </Link>
         <RatesAsOf />
       </SiteHeader>
 
@@ -156,10 +150,7 @@ export default function Home() {
         </aside>
       </main>
 
-      <section
-        id="how"
-        className="grid scroll-mt-4 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6 pb-14"
-      >
+      <section className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-6 pb-14">
         <How step="[01] PASTE">a link from any shop that ships to egypt, or through a forwarder.</How>
         <How step="[02] READ">truecost reads the price from the page and guesses the category.</How>
         <How step="[03] SEE">duty, vat and shipping in egp, as a range, next to the local price.</How>
@@ -168,8 +159,6 @@ export default function Home() {
   );
 }
 
-// POST the link to our API. Anything unexpected (offline, a crash that
-// isn't JSON) becomes a "network" failure instead of an exception.
 async function readProduct(
   url: URL,
 ): Promise<ReadResponse | { ok: false; reason: "network"; steps: Step[] }> {

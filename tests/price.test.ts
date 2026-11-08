@@ -3,9 +3,9 @@ import { parseCurrency, parsePrice } from "@/lib/scrape/price";
 
 describe("parsePrice", () => {
   it("reads the formats from the spec", () => {
-    expect(parsePrice("1.299,00 €")).toBe(1299); // european: dot thousands, comma decimal
-    expect(parsePrice("$1,299.00")).toBe(1299); // us: comma thousands, dot decimal
-    expect(parsePrice("1 299,50")).toBe(1299.5); // space thousands
+    expect(parsePrice("1.299,00 €")).toBe(1299);
+    expect(parsePrice("$1,299.00")).toBe(1299);
+    expect(parsePrice("1 299,50")).toBe(1299.5);
     expect(parsePrice("12")).toBe(12);
   });
 
@@ -24,7 +24,7 @@ describe("parsePrice", () => {
     expect(parsePrice("$12.99 - $19.99")).toBe(12.99);
     expect(parsePrice("12.99-19.99")).toBe(12.99);
     expect(parsePrice("from 12,99 € to 19,99 €")).toBe(12.99);
-    expect(parsePrice("12.99. free shipping")).toBe(12.99); // trailing dot isn't a separator
+    expect(parsePrice("12.99. free shipping")).toBe(12.99);
     expect(parsePrice("1 299 999,00")).toBe(1299999);
   });
 

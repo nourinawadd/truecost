@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ManualEntry } from "@/components/ManualEntry";
 import { SiteHeader } from "@/components/SiteHeader";
 
-// "no link? fill it in yourself" from the home page.
 export default function ManualPage() {
   return (
     <>

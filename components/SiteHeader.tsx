@@ -7,8 +7,6 @@ export function RatesAsOf() {
   return <span className="text-muted">[✦] RATES AS OF {formatShortDate(FX_AS_OF)}</span>;
 }
 
-// The wordmark and label on the left. The right side changes per page,
-// so it's `children`; when a page passes nothing it shows the rates date.
 export function SiteHeader({ children }: { children?: ReactNode }) {
   return (
     <header className="flex flex-wrap items-center justify-between gap-x-8 gap-y-1 border-b border-ink pt-4 pb-2">

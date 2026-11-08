@@ -8,7 +8,6 @@ import {
   type ResultParams,
 } from "@/lib/resultUrl";
 
-// what the result page would get from Next for a given url
 function paramsOf(url: string): Record<string, string> {
   return Object.fromEntries(new URL(url, "https://truecost.test").searchParams);
 }

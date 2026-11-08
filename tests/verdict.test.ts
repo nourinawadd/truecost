@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { compareWithLocal } from "@/lib/cost/verdict";
 
-// the clothing estimate for the canvas defaults
 const total = { low: 6743.1, high: 7261.8 };
 
 describe("compareWithLocal", () => {
@@ -9,7 +8,6 @@ describe("compareWithLocal", () => {
     const v = compareWithLocal(total, 6000, false);
     expect(v.kind).toBe("buy-local");
     if (v.kind !== "buy-local") return;
-    // 6743.1 − 6000 = 743.1, 7261.8 − 6000 = 1261.8
     expect(v.extra.low).toBeCloseTo(743.1);
     expect(v.extra.high).toBeCloseTo(1261.8);
   });
@@ -27,7 +25,6 @@ describe("compareWithLocal", () => {
     const v = compareWithLocal(total, 9000, false);
     expect(v.kind).toBe("import");
     if (v.kind !== "import") return;
-    // 9000 − 7261.8 = 1738.2, 9000 − 6743.1 = 2256.9
     expect(v.saves.low).toBeCloseTo(1738.2);
     expect(v.saves.high).toBeCloseTo(2256.9);
   });
@@ -39,7 +36,6 @@ describe("compareWithLocal", () => {
   });
 
   it("category with no rate yet: pending, with or without a local price", () => {
-    // the total has no duty in it, so any verdict would be wrong
     expect(compareWithLocal(total, 6000, true)).toEqual({ kind: "pending" });
     expect(compareWithLocal(total, null, true)).toEqual({ kind: "pending" });
   });

@@ -8,24 +8,18 @@ import {
 } from "@/data/config";
 import type { Sources } from "@/lib/scrape/types";
 
-// The result page keeps all its state in the URL, so a refresh or a shared
-// link shows the same numbers:
-// /result?price=79&cur=USD&cat=clothing&ship=12&fx=50&...
-
-// [✓] read from the shop, or [?] guessed, check it.
-// A field with no mark was typed in by the user.
-export type Mark = "read" | "guess";
+type Mark = "read" | "guess";
 export type MarkedField = "price" | "cur" | "title" | "img" | "cat";
 export type Src = Partial<Record<MarkedField, Mark>>;
 
 export type ResultParams = {
-  price: number; // in the shop's currency
-  cur: string | null; // ISO code, possibly one we have no rate for
+  price: number;
+  cur: string | null;
   cat: CategoryId;
-  ship: number; // always USD: forwarders quote in USD
-  fx: number | null; // EGP for one unit of cur; null means unknown, ask the user
-  fees: number; // EGP
-  local: number | null; // what a seller in Egypt asks, in EGP
+  ship: number;
+  fx: number | null;
+  fees: number;
+  local: number | null;
   title?: string;
   img?: string;
   shop?: string;
@@ -37,7 +31,6 @@ const MARKED_FIELDS: readonly string[] = ["price", "cur", "title", "img", "cat"]
 export const DEFAULT_SHIP_USD =
   SHIPPING_BANDS.find((band) => band.id === DEFAULT_SHIPPING_BAND)?.usd ?? 0;
 
-// EGP per unit for the currencies we have a rate for, otherwise null
 export function rateFor(cur: string | null | undefined): number | null {
   return cur && Object.hasOwn(FX_RATES, cur) ? FX_RATES[cur as Currency] : null;
 }
@@ -70,8 +63,6 @@ export function buildResultUrl(p: Partial<ResultParams>): string {
   return `/result?${query}`;
 }
 
-// Next gives page searchParams as { key: string | string[] | undefined }.
-// Anything missing or broken falls back to a default; this never throws.
 export function parseResultParams(
   record: Record<string, string | string[] | undefined>,
 ): ResultParams {
@@ -100,8 +91,6 @@ export function parseResultParams(
   };
 }
 
-// The API says which parser gave each field; the URL only needs the mark.
-// Shopify and JSON-LD are the strong sources, OpenGraph is a weak one.
 export function sourcesToSrc(sources: Sources, categoryGuessed: boolean): Src {
   const src: Src = {};
   const fields = [
@@ -118,14 +107,12 @@ export function sourcesToSrc(sources: Sources, categoryGuessed: boolean): Src {
   return src;
 }
 
-// a finite number ≥ 0 (or > 0), otherwise undefined so the default applies
 function number(raw: string | undefined, allowZero: boolean): number | undefined {
   if (raw === undefined) return undefined;
   const n = Number(raw);
   return Number.isFinite(n) && (allowZero ? n >= 0 : n > 0) ? n : undefined;
 }
 
-// only http(s) images, so the page never renders an odd scheme
 function httpUrl(raw: string | undefined): string | undefined {
   if (!raw) return undefined;
   try {
@@ -136,7 +123,6 @@ function httpUrl(raw: string | undefined): string | undefined {
   }
 }
 
-// "price:read,cat:guess" → { price: "read", cat: "guess" }; junk is skipped
 function parseSrc(raw: string | undefined): Src {
   const src: Src = {};
   for (const pair of raw?.split(",") ?? []) {

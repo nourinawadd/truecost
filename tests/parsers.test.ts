@@ -14,7 +14,6 @@ function fixture(name: string): string {
   return readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8");
 }
 
-// any test that reaches this has touched the network by mistake
 const noNetwork = async (): Promise<unknown> => {
   throw new Error("no network in tests");
 };
@@ -23,7 +22,6 @@ function ctx(html: string | null, url = PAGE, fetchJson = noNetwork): ScrapeCont
   return { url: new URL(url), html, $: html ? load(html) : null, fetchJson };
 }
 
-// what Shopify's /products/<handle>.js answers, trimmed to what we read
 const shopifyJson = {
   title: "Linen Overshirt",
   vendor: "Example Co",
@@ -110,7 +108,7 @@ describe("json-ld", () => {
     expect(await jsonLdParser.parse(ctx(fixture("jsonld-offers-array.html")))).toEqual({
       title: "Wool Sweater",
       brand: "Knit Co",
-      image: "/media/sweater.jpg", // made absolute later, by the merge
+      image: "/media/sweater.jpg",
       price: 1299,
       currency: "EUR",
     });
@@ -140,7 +138,7 @@ describe("open graph", () => {
       brand: "Atelier",
       image: "/images/jacket.jpg",
       price: 1299,
-      currency: "eur", // upper-cased later, by the merge
+      currency: "eur",
     });
   });
 
@@ -236,6 +234,6 @@ describe("scrapeProduct", () => {
     const r = await scrapeProduct(new URL(PAGE), fixture("jsonld-product.html"), noNetwork);
     expect(texts(r.steps).some((t) => t.includes("shopify"))).toBe(false);
     expect(r.steps.every((s) => s.ok)).toBe(true);
-    expect(r.info.price).toBe(79); // json-ld found it
+    expect(r.info.price).toBe(79);
   });
 });

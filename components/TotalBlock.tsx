@@ -4,14 +4,13 @@ import { formatEgp, formatPercentRange, isSingleValue } from "@/lib/format";
 
 type Props = {
   total: Range;
-  itemEgp: number; // the shelf price in EGP
+  itemEgp: number;
   price: number;
   cur: string | null;
   blocked: Blocked;
   categoryLabel: string;
 };
 
-// The black panel: the landed cost, and how much more it is than the shelf price.
 export function TotalBlock({ total, itemEgp, price, cur, blocked, categoryLabel }: Props) {
   const markup =
     itemEgp > 0
@@ -28,14 +27,16 @@ export function TotalBlock({ total, itemEgp, price, cur, blocked, categoryLabel 
             {!isSingleValue(total) && <span>– {formatEgp(total.high)}</span>}
           </p>
           <span className="text-xs leading-relaxed text-muted-inverse">
-            shelf price {cur} {price.toFixed(2)} · that is {markup} more once it lands
+            shelf price {cur ?? "[?]"} {price.toFixed(2)} · that is {markup} more once it lands
           </span>
         </>
       ) : (
         <p className="font-display text-[clamp(24px,3vw,32px)] leading-tight font-medium tracking-[-0.02em]">
           {blocked === "rate"
             ? `rate to be added for ${categoryLabel}`
-            : "[?] pick the shop's currency below"}
+            : blocked === "price"
+              ? "[?] add the item price below"
+              : "[?] pick the shop's currency below"}
         </p>
       )}
     </div>

@@ -1,8 +1,6 @@
 import { parsePrice } from "@/lib/scrape/price";
 import type { Parser, ProductInfo } from "@/lib/scrape/types";
 
-// Every Shopify shop serves its product as JSON at the same path + ".js".
-// Covers /products/x, /collections/c/products/x and /en-us/products/x.
 export function matchesShopify(url: URL): boolean {
   const segments = url.pathname.replace(/^\/+|\/+$/g, "").split("/");
   const handle = segments[segments.length - 1];
@@ -38,7 +36,6 @@ export const shopifyParser: Parser = {
     const title = text(product.title);
     if (!title) return null;
 
-    // no currency here: the .js endpoint doesn't say, the page tags fill it in
     const info: ProductInfo = {
       title,
       brand: text(product.vendor),
@@ -49,7 +46,6 @@ export const shopifyParser: Parser = {
   },
 };
 
-// Shopify prices are in cents: 7900 → 79
 function cents(value: unknown): number | undefined {
   const n = typeof value === "number" ? value : parsePrice(text(value));
   return n !== null && Number.isFinite(n) ? n / 100 : undefined;
@@ -58,7 +54,6 @@ function cents(value: unknown): number | undefined {
 function image(product: Record<string, unknown>): string | undefined {
   const images = Array.isArray(product.images) ? product.images : [];
   const url = text(product.featured_image) ?? images.map(text).find(Boolean);
-  // Shopify gives protocol-relative urls: //cdn.shopify.com/...
   return url?.startsWith("//") ? `https:${url}` : url;
 }
 

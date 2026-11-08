@@ -9,8 +9,6 @@ type Props = {
   disabled: boolean;
 };
 
-// The link box and the CHECK button. A form, so Enter submits. We check the
-// link looks like one here; the server checks it properly again.
 export function LinkInput({ value, onChange, onSubmit, disabled }: Props) {
   const [invalid, setInvalid] = useState(false);
 
@@ -60,8 +58,6 @@ export function LinkInput({ value, onChange, onSubmit, disabled }: Props) {
   );
 }
 
-// "shop.com/x" → https://shop.com/x. Only http(s) links with a dot in the
-// host count, so "hello" or "localhost" are caught before calling the API.
 function toUrl(raw: string): URL | null {
   const text = raw.trim();
   if (!text) return null;

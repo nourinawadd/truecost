@@ -4,10 +4,10 @@ import { VAT_RATE } from "@/data/config";
 export type Range = { low: number; high: number };
 
 export type CostInput = {
-  price: number; // in the shop's currency
-  fx: number; // EGP for one unit of the shop's currency
-  shippingUsd: number; // forwarders always quote in USD
-  usdFx: number; // EGP for one USD
+  price: number;
+  fx: number;
+  shippingUsd: number;
+  usdFx: number;
   category: Category;
   feesEgp: number;
 };
@@ -20,15 +20,13 @@ export type CostBreakdown = {
   vat: Range;
   fees: number;
   total: Range;
-  pending: boolean; // the category has no rate yet
+  pending: boolean;
 };
 
-// NaN, Infinity and negative numbers count as 0, so bad input never throws
 function safe(n: number): number {
   return Number.isFinite(n) && n > 0 ? n : 0;
 }
 
-// The formula from CLAUDE.md. No rounding here: that's for display.
 export function calculateLandedCost(input: CostInput): CostBreakdown {
   const itemEgp = safe(input.price) * safe(input.fx);
   const shippingEgp = safe(input.shippingUsd) * safe(input.usdFx);
@@ -43,7 +41,6 @@ export function calculateLandedCost(input: CostInput): CostBreakdown {
     duty = { low: cif * category.low, high: cif * category.high };
     vat = { low: (cif + duty.low) * VAT_RATE, high: (cif + duty.high) * VAT_RATE };
   } else if (category.kind === "flat") {
-    // phones: one flat rate replaces duty and vat
     duty = { low: cif * category.rate, high: cif * category.rate };
   }
 

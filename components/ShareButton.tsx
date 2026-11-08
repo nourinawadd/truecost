@@ -2,12 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-// Copies a link to this exact result. `href` is the page's current state,
-// so an edit still waiting to reach the address bar is included.
 export function ShareButton({ href }: { href: string }) {
   const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
 
-  // "copied" fades back after 2 seconds; a failure stays until the next try
   useEffect(() => {
     if (state !== "copied") return;
     const timer = setTimeout(() => setState("idle"), 2000);
@@ -16,7 +13,6 @@ export function ShareButton({ href }: { href: string }) {
 
   async function copy() {
     try {
-      // navigator.clipboard is missing on plain http and in some browsers
       await navigator.clipboard.writeText(new URL(href, location.origin).href);
       setState("copied");
     } catch {
