@@ -10,7 +10,7 @@ export const FX_RATES: Record<Currency, number> = {
   CNY: 7,
 };
 
-export const FX_AS_OF = "2026-11-01";
+export const FX_AS_OF = "2026-11-08";
 
 export const SHIPPING_BANDS = [
   { id: "0-0.5", label: "under 0.5 kg", usd: 8 },

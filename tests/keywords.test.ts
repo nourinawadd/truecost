@@ -26,6 +26,13 @@ describe("guessCategory", () => {
     expect(guessCategory("Redmi wireless earbuds")?.id).toBe("electronics");
   });
 
+  it("footwear and fragrance", () => {
+    expect(guessCategory("Leather Chelsea Boots")?.id).toBe("clothing");
+    expect(guessCategory("Running Shoes")?.id).toBe("clothing");
+    expect(guessCategory("Retro Sneakers")?.id).toBe("clothing");
+    expect(guessCategory("Rare Beginnings Eau de Parfum")?.id).toBe("cosmetics");
+  });
+
   it("no match gives null", () => {
     expect(guessCategory("Gift card")).toBeNull();
     expect(guessCategory("")).toBeNull();

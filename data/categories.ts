@@ -30,7 +30,7 @@ export const CATEGORIES: Category[] = [
     keywords: [
       "shirt", "t-shirt", "tee", "hoodie", "jacket", "dress", "jeans", "trousers",
       "pants", "sweater", "coat", "skirt", "shorts", "blouse", "cardigan", "sweatshirt",
-      "socks", "leggings",
+      "socks", "leggings", "shoe", "sneaker", "trainer", "boot",
     ],
     exclude: [],
   },
@@ -43,7 +43,7 @@ export const CATEGORIES: Category[] = [
     keywords: [
       "lipstick", "mascara", "foundation", "concealer", "serum", "moisturizer",
       "moisturiser", "cleanser", "toner", "sunscreen", "perfume", "fragrance",
-      "eyeliner", "blush", "skincare", "makeup", "cream",
+      "eyeliner", "blush", "skincare", "makeup", "cream", "parfum", "cologne",
     ],
     exclude: [],
   },
