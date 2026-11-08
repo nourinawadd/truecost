@@ -4,7 +4,14 @@ paste a link from a shop abroad. the app reads the price and adds what egypt add
 
 live at [truecost-credosis.vercel.app](https://truecost-credosis.vercel.app)
 
-<!-- screenshots: home · reading log · result (desktop) · result (375px) -->
+<br>
+
+<p align="center">
+  <img src="assets/result-desktop.png" alt="result page with the cost breakdown, category and a buy local verdict" width="92%">
+  <br><sub>every line of the cost, and a verdict against the local price</sub>
+</p>
+
+<br>
 
 **✦ what it does**
 
@@ -18,6 +25,19 @@ live at [truecost-credosis.vercel.app](https://truecost-credosis.vercel.app)
 - the whole result lives in the link, so a refresh or a shared link shows the same numbers
 - a shop that blocks the reader still gets you an answer: fill it in yourself, same math
 
+<br>
+
+<p align="center">
+  <img src="assets/mobile-top.png" alt="result on a phone: the product and the landed cost" width="27%">
+  &nbsp;&nbsp;
+  <img src="assets/mobile-breakdown.png" alt="result on a phone: the cost breakdown, line by line" width="27%">
+  &nbsp;&nbsp;
+  <img src="assets/mobile-verdict.png" alt="result on a phone: the category and the buy local verdict" width="27%">
+  <br><sub>the same result at 375px</sub>
+</p>
+
+<br>
+
 **✦ how it reads a page**
 
 a parser ladder, ported from [hold](https://github.com/nourinawadd/hold). each step only runs if the one before it came up short:
@@ -30,6 +50,17 @@ a parser ladder, ported from [hold](https://github.com/nourinawadd/hold). each s
 shopify and json-ld count as strong sources. open graph is weak, so anything it gives is marked `[?]`. `1.299,00` and `1,299.00` both read as 1299, and a bare `¥` stays unknown, since it could be cny or jpy.
 
 the server only fetches public http(s) pages: no localhost, no private ips, no `.local` names. otherwise anyone could use it to reach its own network.
+
+<br>
+
+<p align="center">
+  <img src="assets/home.png" alt="truecost home page with the product link box" width="46%">
+  &nbsp;&nbsp;
+  <img src="assets/blocked.png" alt="a blocked shop showing the reading log and the manual form" width="46%">
+  <br><sub>paste a link from a shop abroad &nbsp;·&nbsp; a shop that blocks the reader still gets you an answer</sub>
+</p>
+
+<br>
 
 **✦ the math**
 
